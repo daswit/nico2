@@ -1,0 +1,494 @@
+<html>
+
+<head>
+  <base href="/" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coach Fitness - Cursos Gratuitos</title>
+  <style>
+    :root {
+      --primary: #2ecc71;
+      --secondary: #3498db;
+      --dark: #2c3e50;
+      --light: #ecf0f1;
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--light);
+    }
+
+    .header {
+      background: var(--white);
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--dark);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48') center/cover;
+      color: var(--white);
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .hero-content {
+      max-width: 800px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    .videos-section {
+      padding: 5rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .video-list {
+      list-style: none;
+      margin-top: 2rem;
+    }
+
+    .video-item {
+      background: var(--white);
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .video-item:hover {
+      transform: translateX(10px);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-header {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .video-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .video-content.active {
+      max-height: 500px;
+    }
+
+    .video-content iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: none;
+    }
+
+    .success-modal {
+      text-align: center;
+    }
+
+    .success-modal svg {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0.5rem;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .hero {
+        padding-top: 6rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+      }
+
+      .video-header h3 {
+        font-size: 0.9rem;
+      }
+
+      .form-group input {
+        font-size: 1rem;
+        padding: 0.6rem;
+      }
+
+      .btn-primary {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.5rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .video-header {
+        padding: 0.8rem;
+      }
+
+      .modal-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <div class="nav-logo">CoachFitness</div>
+      <div class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#videos">Videos Gratuitos</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <h1>Transforma tu vida con fitness</h1>
+      <p>Accede a contenido exclusivo y gratuito para mejorar tu salud y condición física</p>
+      <button class="btn-primary" onclick="openModal()">¡Regístrate y accede gratis!</button>
+    </div>
+  </section>
+
+  <div class="modal" id="registerModal">
+    <div class="modal-content">
+      <h2>Registro</h2>
+      <form id="registerForm" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" required>
+          <div class="error"></div>
+        </div>
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" required>
+          <div class="error"></div>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" required>
+          <div class="error"></div>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" required>
+          <div class="error"></div>
+        </div>
+        <button type="submit" class="btn-primary">¡Accede Gratis!</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="successModal">
+    <div class="modal-content success-modal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+        <path d="M20 6L9 17l-5-5" />
+      </svg>
+      <h2>¡Felicidades! Te has registrado</h2>
+      <p>Serás redirigido al contenido gratuito en unos segundos...</p>
+      <button class="btn-primary" onclick="goToVideos()">Ver Contenido Gratis</button>
+    </div>
+  </div>
+
+  <section class="videos-section" id="videos">
+    <h2>Videos Gratuitos</h2>
+    <ul class="video-list" id="videoList">
+    </ul>
+  </section>
+
+  <script>
+    function openModal() {
+      document.getElementById('registerModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('registerModal').style.display = 'none';
+    }
+
+    function showSuccessModal() {
+      document.getElementById('registerModal').style.display = 'none';
+      document.getElementById('successModal').style.display = 'flex';
+      setTimeout(() => {
+        goToVideos();
+      }, 3000);
+    }
+
+    function goToVideos() {
+      document.getElementById('successModal').style.display = 'none';
+      document.getElementById('videos').style.display = 'block';
+      document.getElementById('videos').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validatePhone(phone) {
+      return /^\d{10}$/.test(phone);
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      let isValid = true;
+      const nombre = document.getElementById('nombre');
+      const apellido = document.getElementById('apellido');
+      const email = document.getElementById('email');
+      const telefono = document.getElementById('telefono');
+
+      if (nombre.value.trim() === '') {
+        showError(nombre, 'El nombre es requerido');
+        isValid = false;
+      }
+
+      if (apellido.value.trim() === '') {
+        showError(apellido, 'El apellido es requerido');
+        isValid = false;
+      }
+
+      if (!validateEmail(email.value)) {
+        showError(email, 'Ingrese un correo electrónico válido');
+        isValid = false;
+      }
+
+      if (!validatePhone(telefono.value)) {
+        showError(telefono, 'Ingrese un número de teléfono válido (10 dígitos)');
+        isValid = false;
+      }
+
+      if (isValid) {
+        localStorage.setItem('registered', 'true');
+        showSuccessModal();
+      }
+    }
+
+    function showError(input, message) {
+      const error = input.nextElementSibling;
+      error.textContent = message;
+    }
+
+    const videos = [
+      { title: 'Ejemplo 1', videoId: 'example1' },
+      { title: 'Ejemplo 2', videoId: 'example2' },
+      { title: 'Ejemplo 3', videoId: 'example3' },
+      { title: 'Ejemplo 4', videoId: 'example4' },
+      { title: 'Ejemplo 5', videoId: 'example5' },
+      { title: 'Ejemplo 6', videoId: 'example6' },
+      { title: 'Ejemplo 7', videoId: 'example7' },
+      { title: 'Ejemplo 8', videoId: 'example8' },
+      { title: 'Ejemplo 9', videoId: 'example9' },
+      { title: 'Ejemplo 10', videoId: 'example10' }
+    ];
+
+    function createVideoList() {
+      const videoList = document.getElementById('videoList');
+
+      videos.forEach((video, index) => {
+        const li = document.createElement('li');
+        li.className = 'video-item';
+        li.innerHTML = `
+      <div class="video-header">
+        <h3>${video.title}</h3>
+        <span>▼</span>
+      </div>
+      <div class="video-content">
+        <iframe src="https://www.youtube.com/embed/${video.videoId}" allowfullscreen></iframe>
+      </div>
+    `;
+
+        li.querySelector('.video-header').addEventListener('click', function () {
+          const content = this.nextElementSibling;
+          const allContents = document.querySelectorAll('.video-content');
+          const allSpans = document.querySelectorAll('.video-header span');
+
+          allContents.forEach(item => {
+            if (item !== content) {
+              item.classList.remove('active');
+            }
+          });
+
+          allSpans.forEach(span => {
+            span.textContent = '▼';
+          });
+
+          content.classList.toggle('active');
+          this.querySelector('span').textContent = content.classList.contains('active') ? '▲' : '▼';
+
+          if (content.classList.contains('active')) {
+            li.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+
+        videoList.appendChild(li);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const videosSection = document.getElementById('videos');
+      videosSection.style.display = 'none';
+
+      if (localStorage.getItem('registered') === 'true') {
+        videosSection.style.display = 'block';
+      }
+
+      createVideoList();
+    });
+
+    // Cerrar modal al hacer clic fuera
+    window.onclick = function (event) {
+      const registerModal = document.getElementById('registerModal');
+      const successModal = document.getElementById('successModal');
+      if (event.target === registerModal) {
+        closeModal();
+      }
+      if (event.target === successModal) {
+        successModal.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+
+</html>
